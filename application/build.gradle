@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.eddy.admin.catalog.application'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(':domain')
+
+    implementation group: 'io.vavr', name: 'vavr', version: '0.10.5'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.15.2'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-mysql:8.5.10'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.springframework.boot' version '3.1.4'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.flywaydb.flyway' version '8.5.10'
+}
+
+group = 'com.eddy.admin.catalog.infrastructure'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    archiveFileName = 'application.jar'
+    destinationDirectory.set(layout.buildDirectory.dir('libs'))
+}
+
+ext {
+    springdocVersion = "2.3.0"
+}
+
+dependencies {
+
+    implementation project(':application')
+    implementation project(':domain')
+
+    implementation group: 'io.vavr', name: 'vavr', version: '0.10.5'
+    implementation('com.mysql:mysql-connector-j:8.2.0')
+
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+
+    implementation('org.springframework.boot:spring-boot-starter-undertow')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    testImplementation('org.flywaydb:flyway-core')
+    testRuntimeOnly('com.h2database:h2')
+
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-common:${springdocVersion}"
+}
+
+flyway {
+    url = System.getenv('FLYWAY_DB') ?: 'jdbc:mysql://localhost:3306/adm_videos'
+    user = System.getenv('FLYWAY_USER') ?: 'root'
+    password = System.getenv('FLYWAY_PASS') ?: '123456'
+}
+
+test {
+    useJUnitPlatform()
+}
