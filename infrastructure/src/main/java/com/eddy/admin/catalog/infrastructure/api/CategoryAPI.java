@@ -1,6 +1,7 @@
 package com.eddy.admin.catalog.infrastructure.api;
 
 import com.eddy.admin.catalog.domain.pagination.Pagination;
+import com.eddy.admin.catalog.infrastructure.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +23,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "Invalid data provided in the request"),
             @ApiResponse(responseCode = "500", description = "Unexpected server error")}
     )
-    ResponseEntity<?> createCategory();
+    ResponseEntity<?> createCategory(@RequestBody CreateCategoryApiInput input);
 
     @GetMapping
     @Operation(summary = "Retrieve all categories based on filters")

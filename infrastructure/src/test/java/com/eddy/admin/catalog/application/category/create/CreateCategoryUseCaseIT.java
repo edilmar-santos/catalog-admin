@@ -29,7 +29,7 @@ public class CreateCategoryUseCaseIT {
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
-        final var actualCategory = repository.findById(actualOutput.id().getValue()).get();
+        final var actualCategory = repository.findById(actualOutput.id()).get();
 
         Assertions.assertEquals(1, repository.count());
         Assertions.assertEquals(expectedName, actualCategory.getName());
