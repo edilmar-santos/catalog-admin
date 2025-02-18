@@ -3,7 +3,7 @@ package com.eddy.admin.catalog.application.category.retrieve.get;
 import com.eddy.admin.catalog.domain.category.Category;
 import com.eddy.admin.catalog.domain.category.CategoryGateway;
 import com.eddy.admin.catalog.domain.category.CategoryID;
-import com.eddy.admin.catalog.domain.exceptions.DomainException;
+import com.eddy.admin.catalog.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,6 @@ public class GetCategoryByIdUseCaseTest {
 
     @Test
     void shouldRetrieveAValidCategorySuccessfullyWhenCallExecute() {
-
         final var expectedName = "Category Name";
         final var expectedDescription = "Category Description";
         final var expectedIsActive = true;
@@ -55,25 +54,21 @@ public class GetCategoryByIdUseCaseTest {
 
     @Test
     void shouldReturnANotFoundExceptionWhenCategoryIdIsInvalid() {
-
-        final var expectedErrorCount = 1;
         final var expectedId = CategoryID.from("invalidId");
-        final var expectedErrorMessage = "Category ID %s not found".formatted(expectedId.getValue());
+        final var expectedErrorMessage = "Category ID %s not found.".formatted(expectedId.getValue());
 
         when(categoryGateway.getById(expectedId)).thenReturn(Optional.empty());
 
-        final var actualException = Assertions.assertThrows(DomainException.class,
+        final var actualException = Assertions.assertThrows(NotFoundException.class,
                 () -> getCategoryIdUseCase.execute(expectedId.getValue()));
 
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
         Mockito.verify(categoryGateway, times(1)).getById(expectedId);
     }
 
     @Test
     void shouldReturnAGenericExceptionWhenCategoryGetByIdThrowsAnError() {
-
         final var expectedId = CategoryID.from("invalidId");
         final var expectedErrorMessage = "Error Generic";
 

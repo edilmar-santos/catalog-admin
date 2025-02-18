@@ -1,6 +1,6 @@
 package com.eddy.admin.catalog.domain.category;
 
-import com.eddy.admin.catalog.domain.Entity;
+import com.eddy.admin.catalog.domain.AggregateRoot;
 import com.eddy.admin.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-public class Category extends Entity<CategoryID> implements Cloneable {
+public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
     private String name;
     private String description;

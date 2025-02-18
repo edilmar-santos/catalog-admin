@@ -1,6 +1,7 @@
 package com.eddy.admin.catalog.infrastructure.api;
 
 import com.eddy.admin.catalog.domain.pagination.Pagination;
+import com.eddy.admin.catalog.infrastructure.category.models.CategoryApiOutput;
 import com.eddy.admin.catalog.infrastructure.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,4 +39,14 @@ public interface CategoryAPI {
             @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage,
             @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort
     );
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Retrieve a category by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "A Category retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "500", description = "Unexpected server error")}
+    )
+    CategoryApiOutput getCategoryById(@PathVariable final String id);
 }
+

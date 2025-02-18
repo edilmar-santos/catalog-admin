@@ -1,9 +1,9 @@
 package com.eddy.admin.catalog.application.category.retrieve.get;
 
+import com.eddy.admin.catalog.domain.category.Category;
 import com.eddy.admin.catalog.domain.category.CategoryGateway;
 import com.eddy.admin.catalog.domain.category.CategoryID;
-import com.eddy.admin.catalog.domain.exceptions.DomainException;
-import com.eddy.admin.catalog.domain.validation.Error;
+import com.eddy.admin.catalog.domain.exceptions.NotFoundException;
 
 import java.util.function.Supplier;
 
@@ -15,7 +15,6 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
         this.categoryGateway = categoryGateway;
     }
 
-
     @Override
     public CategoryOutput execute(String input) {
 
@@ -26,7 +25,7 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
                 .orElseThrow(categoryNotFound(categoryId));
     }
 
-    private static Supplier<DomainException> categoryNotFound(final CategoryID categoryId) {
-        return () -> DomainException.with(new Error("Category ID %s not found".formatted(categoryId.getValue())));
+    private static Supplier<NotFoundException> categoryNotFound(final CategoryID categoryId) {
+        return () -> NotFoundException.with(Category.class, categoryId);
     }
 }
