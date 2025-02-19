@@ -42,7 +42,7 @@ public class UpdateCategoryUseCaseIT {
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
-        final var actualCategory = repository.findById(actualOutput.id().getValue()).get();
+        final var actualCategory = repository.findById(actualOutput.id()).get();
 
         Assertions.assertEquals(expectedId.getValue(), actualCategory.getId());
         Assertions.assertEquals(expectedName, actualCategory.getName());

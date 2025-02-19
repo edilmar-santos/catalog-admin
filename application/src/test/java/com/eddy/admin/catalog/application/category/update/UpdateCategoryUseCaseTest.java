@@ -167,16 +167,14 @@ public class UpdateCategoryUseCaseTest {
         final var expectedDescription = "Category Description";
         final var expectedIsActive = true;
         final var invalidId = "Invalid Id";
-        final var expectedErrorMessage = "Category ID %s not found".formatted(invalidId);
-        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "Category ID %s not found.".formatted(invalidId);
 
         when(categoryGateway.getById(CategoryID.from(invalidId))).thenReturn(Optional.empty());
 
         final var actualException = Assertions.assertThrows(DomainException.class,
                 () -> useCase.execute(UpdateCategoryCommand.with(invalidId, expectedName, expectedDescription, expectedIsActive)));
 
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
         verify(categoryGateway, times(1)).getById(CategoryID.from(invalidId));
         verify(categoryGateway, times(0)).update(any());
